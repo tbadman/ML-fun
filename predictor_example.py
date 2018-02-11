@@ -10,7 +10,7 @@ import seaborn as sns
 def encode_features(df_train, df_test):
     features = ['Fare', 'Cabin', 'Age', 'Sex', 'Lname', 'NamePrefix']
     df_combined = pd.concat([df_train[features], df_test[features]])
-    
+
     for feature in features:
         le = preprocessing.LabelEncoder()
         le = le.fit(df_combined[feature])
@@ -42,8 +42,8 @@ def simplify_fares(df):
 def format_name(df):
     df['Lname'] = df.Name.apply(lambda x: x.split(' ')[0])
     df['NamePrefix'] = df.Name.apply(lambda x: x.split(' ')[1])
-    return df    
-    
+    return df
+
 def drop_features(df):
     return df.drop(['Ticket', 'Name', 'Embarked'], axis=1)
 
@@ -75,13 +75,13 @@ num_test = 0.20
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_test, random_state=23)
 
 
-# Choose the type of classifier. 
+# Choose the type of classifier.
 clf = RandomForestClassifier()
 
 # Choose some parameter combinations to try
-parameters = {'n_estimators': [4, 6, 9], 
+parameters = {'n_estimators': [4, 6, 9],
               'criterion': ['entropy', 'gini'],
-              'max_depth': [2, 3, 5, 10], 
+              'max_depth': [2, 3, 5, 10],
               'min_samples_split': [2, 3, 5],
               'min_samples_leaf': [1,5,8]
              }
@@ -96,9 +96,8 @@ grid_obj = grid_obj.fit(X_train, y_train)
 # Set the clf to the best combination of parameters
 clf = grid_obj.best_estimator_
 
-# Fit the best algorithm to the data. 
+# Fit the best algorithm to the data.
 clf.fit(X_train, y_train)
-
 
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
